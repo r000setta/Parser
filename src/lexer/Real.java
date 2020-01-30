@@ -1,15 +1,15 @@
 package lexer;
 
-public class Real extends Token{
+public class Real extends Token {
     public final float value;
 
-    public Real(float v){
+    Real(float v) {
         super(Tag.REAL);
-        value=v;
+        value = v;
     }
 
     @Override
     public String toString() {
-        return value+"";
+        return value + "";
     }
 }

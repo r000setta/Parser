@@ -3,8 +3,11 @@ package inter;
 import lexer.Token;
 import symbols.Type;
 
+/**
+ * 实现双目运算符
+ */
 public class Arith extends Op {
-    public Expr expr1, expr2;
+    private Expr expr1, expr2;
 
     public Arith(Token tok, Expr x1, Expr x2) {
         super(tok, null);

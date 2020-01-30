@@ -16,9 +16,9 @@ public class If extends Stmt{
 
     @Override
     public void gen(int b, int a) {
-        int label=newlabel();
+        int label= newLabel();
         expr.jumping(0,a);
-        emitlabel(label);
+        emitLabel(label);
         stmt.gen(label,a);
     }
 }

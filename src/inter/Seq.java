@@ -1,8 +1,8 @@
 package inter;
 
 public class Seq extends Stmt{
-    Stmt stmt1;
-    Stmt stmt2;
+    private Stmt stmt1;
+    private Stmt stmt2;
 
     public Seq(Stmt s1,Stmt s2){
         stmt1=s1;
@@ -14,9 +14,9 @@ public class Seq extends Stmt{
         if (stmt1==Stmt.Null){
             stmt2.gen(b,a);
         }else {
-            int label=newlabel();
+            int label= newLabel();
             stmt1.gen(b,label);
-            emitlabel(label);
+            emitLabel(label);
             stmt2.gen(label,a);
         }
     }

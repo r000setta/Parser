@@ -1,9 +1,8 @@
 package lexer;
 
-import javafx.concurrent.Worker;
 
 public class Word extends Token {
-    public String lexeme = "";
+    public String lexeme;
 
     public Word(String s, int tag) {
         super(tag);

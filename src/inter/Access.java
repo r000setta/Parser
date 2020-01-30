@@ -4,27 +4,28 @@ import lexer.Tag;
 import lexer.Word;
 import symbols.Type;
 
-public class Access extends Op{
+public class Access extends Op {
     public Id array;
     public Expr index;
-    public Access(Id a, Expr i, Type p){
-        super(new Word("[]", Tag.INDEX),p);
-        array=a;
-        index=i;
+
+    public Access(Id a, Expr i, Type p) {
+        super(new Word("[]", Tag.INDEX), p);
+        array = a;
+        index = i;
     }
 
     @Override
     public Expr gen() {
-        return new Access(array,index.reduce(),type);
+        return new Access(array, index.reduce(), type);
     }
 
     @Override
     public void jumping(int t, int f) {
-        emitjumps(reduce().toString(),t,f);
+        emitJumps(reduce().toString(), t, f);
     }
 
     @Override
     public String toString() {
-        return array.toString()+" [ "+index.toString()+" ]";
+        return array.toString() + " [ " + index.toString() + " ]";
     }
 }

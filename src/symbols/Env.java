@@ -4,24 +4,25 @@ import inter.Id;
 import lexer.Token;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 public class Env {
-    private Hashtable table;
+    private Map<Token, Id> table;
     protected Env prev;
 
     public Env(Env n) {
-        table = new Hashtable();
+        table = new Hashtable<>();
         prev = n;
     }
 
-    public void put(Token w, Id i){
-        table.put(w,i);
+    public Object put(Token w, Id i) {
+        return table.putIfAbsent(w,i);
     }
 
-    public Id get(Token w){
-        for (Env e=this;e!=null;e=e.prev){
-            Id found=(Id)(e.table.get(w));
-            if (found!=null){
+    public Id get(Token w) {
+        for (Env e = this; e != null; e = e.prev) {
+            Id found = e.table.get(w);
+            if (found != null) {
                 return found;
             }
         }

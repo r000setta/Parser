@@ -1,6 +1,6 @@
 package inter;
 
-import lexer.Num;
+import lexer.Numeric;
 import lexer.Token;
 import lexer.Word;
 import symbols.Type;
@@ -11,7 +11,7 @@ public class Constant extends Expr {
     }
 
     public Constant(int i) {
-        super(new Num(i), Type.Int);
+        super(new Numeric(i), Type.Int);
     }
 
     public static final Constant

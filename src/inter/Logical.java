@@ -4,7 +4,7 @@ import lexer.Token;
 import symbols.Type;
 
 public class Logical extends Expr {
-    public Expr expr1,expr2;
+    protected Expr expr1,expr2;
 
     Logical(Token tok,Expr x1,Expr x2){
         super(tok,null);
@@ -26,14 +26,14 @@ public class Logical extends Expr {
 
     @Override
     public Expr gen() {
-        int f=newlabel();
-        int a=newlabel();
+        int f= newLabel();
+        int a= newLabel();
         Temp temp=new Temp(type);
         this.jumping(0,f);
         emit("goto L"+a);
-        emitlabel(f);
+        emitLabel(f);
         emit(temp.toString()+" = false");
-        emitlabel(a);
+        emitLabel(a);
         return temp;
     }
 

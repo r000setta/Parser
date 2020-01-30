@@ -9,11 +9,11 @@ public class And extends Logical {
 
     @Override
     public void jumping(int t, int f) {
-        int label=f!=0?f:newlabel();
+        int label=f!=0?f: newLabel();
         expr1.jumping(0,label);
         expr2.jumping(t,f);
         if (f==0){
-            emitlabel(label);
+            emitLabel(label);
         }
     }
 }

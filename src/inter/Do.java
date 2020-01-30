@@ -21,9 +21,9 @@ public class Do extends Stmt {
     @Override
     public void gen(int b, int a) {
         after=a;
-        int label=newlabel();
+        int label= newLabel();
         stmt.gen(b,label);
-        emitlabel(label);
+        emitLabel(label);
         expr.jumping(b,0);
     }
 }

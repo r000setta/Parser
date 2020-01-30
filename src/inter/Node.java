@@ -3,23 +3,26 @@ package inter;
 import lexer.Lexer;
 
 public class Node {
-    int lexline = 0;
+    private int lexLine;
 
     Node() {
-        lexline = Lexer.line;
+        lexLine = Lexer.line;
     }
 
-    void error(String s) {
-        throw new Error("near line " + lexline + ": " + s);
+    void error(String msg) {
+        throw new Error("near line " + lexLine + ": " + msg);
     }
 
-    static int labels = 0;
+    /**
+     * 生成三地址代码
+     */
+    private static int labels = 0;
 
-    public int newlabel() {
+    public int newLabel() {
         return ++labels;
     }
 
-    public void emitlabel(int i) {
+    public void emitLabel(int i) {
         System.out.println("L" + i + ":");
     }
 

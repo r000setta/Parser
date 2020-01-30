@@ -1,9 +1,8 @@
 package inter;
 
+//每个语句构造被实现为Stmt的一个子类
 public class Stmt extends Node {
-    public Stmt() {
-
-    }
+    public Stmt() {}
 
     public static Stmt Null = new Stmt();
 
@@ -13,5 +12,5 @@ public class Stmt extends Node {
 
     int after = 0;
 
-    public static Stmt Enclosing = Stmt.Null;
+    public static Stmt Enclosing = Stmt.Null;   //用于break语句
 }
