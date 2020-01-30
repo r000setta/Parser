@@ -1,0 +1,11 @@
+extern print:int 
+decl a:int
+decl b:int
+decl c:int
+L1:
+a = 10
+L3:
+b = 1
+L4:
+c = 2
+L5:
