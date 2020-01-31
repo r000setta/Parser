@@ -1,5 +1,6 @@
 package inter;
 
+import config.IREmit;
 import symbols.Type;
 
 public class Set extends Stmt {
@@ -28,6 +29,6 @@ public class Set extends Stmt {
 
     @Override
     public void gen(int b, int a) {
-        emit(id.toString() + " = " + expr.gen().toString());
+        IREmit.emit(id.toString() + " = " + expr.gen().toString());
     }
 }

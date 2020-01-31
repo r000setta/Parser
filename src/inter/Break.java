@@ -1,5 +1,7 @@
 package inter;
 
+import config.IREmit;
+
 public class Break extends Stmt {
     Stmt stmt;
 
@@ -11,6 +13,6 @@ public class Break extends Stmt {
 
     @Override
     public void gen(int b, int a) {
-        emit("goto L"+stmt.after);
+        IREmit.emit("goto L"+stmt.after);
     }
 }

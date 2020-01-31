@@ -22,4 +22,17 @@ public class Word extends Token {
             True = new Word("true", Tag.TRUE),
             False = new Word("false", Tag.FALSE),
             temp = new Word("t", Tag.TEMP);
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Word))
+            return false;
+        Word that = (Word) obj;
+        return lexeme.equals(that.lexeme) && tag == that.tag;
+    }
+
+    @Override
+    public int hashCode() {
+        return lexeme.hashCode() + tag;
+    }
 }

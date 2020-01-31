@@ -1,11 +1,11 @@
 extern print:int 
 decl a:int
-decl b:int
-decl c:int
-L1:
-a = 10
-L3:
-b = 1
+ifFalse a != 10 goto L3
 L4:
-c = 2
+a = a + 1
 L5:
+goto L1
+L3:
+a = 110
+L6:
+

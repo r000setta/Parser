@@ -1,5 +1,6 @@
 package inter;
 
+import config.IREmit;
 import lexer.Lexer;
 
 public class Node {
@@ -23,7 +24,7 @@ public class Node {
     }
 
     public void emitLabel(int i) {
-        System.out.println("L" + i + ":");
+        IREmit.emit("L" + i + ":");
     }
 
     public void emit(String s) {

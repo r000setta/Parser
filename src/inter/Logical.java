@@ -1,5 +1,6 @@
 package inter;
 
+import config.IREmit;
 import lexer.Token;
 import symbols.Type;
 
@@ -30,9 +31,9 @@ public class Logical extends Expr {
         int a= newLabel();
         Temp temp=new Temp(type);
         this.jumping(0,f);
-        emit("goto L"+a);
+        IREmit.emit("goto L"+a);
         emitLabel(f);
-        emit(temp.toString()+" = false");
+        IREmit.emit(temp.toString()+" = false");
         emitLabel(a);
         return temp;
     }

@@ -8,6 +8,5 @@ public class Main {
         Lexer lex=new Lexer("D:\\java2\\Parser\\out\\production\\Parser\\test.txt");
         Parser parser=new Parser(lex);
         parser.program();
-        System.out.println('\n');
     }
 }

@@ -1,3 +1,7 @@
 {
-extern int print(int a int b int c);
+extern void print(int,float,int);
+int a;
+float b;
+int c;
+print(a,b,c);
 }#

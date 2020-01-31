@@ -17,7 +17,8 @@ public class Type extends Word {
             Int = new Type("int", Tag.BASIC, 4),
             Float = new Type("float", Tag.BASIC, 8),
             Char = new Type("char", Tag.BASIC, 1),
-            Bool = new Type("boolean", Tag.BASIC, 1);
+            Bool = new Type("boolean", Tag.BASIC, 1),
+            Void = new Type("void", Tag.BASIC, 1);
 
     public static boolean numeric(Type p) {
         return p == Type.Char || p == Type.Int || p == Type.Float;

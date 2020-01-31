@@ -1,5 +1,6 @@
 package inter;
 
+import config.IREmit;
 import symbols.Type;
 
 public class Else extends Stmt{
@@ -21,7 +22,7 @@ public class Else extends Stmt{
         expr.jumping(0,label2);
         emitLabel(label1);
         stmt1.gen(label1,a);
-        emit("goto L"+a);
+        IREmit.emit("goto L"+a);
         emitLabel(label2);
         stmt2.gen(label2,a);
     }

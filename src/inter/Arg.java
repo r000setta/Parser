@@ -15,4 +15,16 @@ public class Arg {
         this.type = type;
         this.name = name;
     }
+
+    public Arg(Type type){
+        this(type,"#");
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public String getName() {
+        return name;
+    }
 }

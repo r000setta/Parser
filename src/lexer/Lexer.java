@@ -1,6 +1,7 @@
 package lexer;
 
 
+import parser.FuncTable;
 import symbols.Type;
 
 import java.io.*;
@@ -11,6 +12,8 @@ public class Lexer {
     public static int line = 1;
     private char peek = ' ';
     Map<String, Word> words = new Hashtable<>();
+
+    private FuncTable funcTable;
 
     void reverse(Word w) {
         words.put(w.lexeme, w);
@@ -31,7 +34,9 @@ public class Lexer {
         reverse(Type.Char);
         reverse(Type.Bool);
         reverse(Type.Float);
+        reverse(Type.Void);
         reader = new BufferedReader(new FileReader(path));
+        funcTable = new FuncTable();
     }
 
     void read() throws IOException {
@@ -131,6 +136,9 @@ public class Lexer {
                 read();
             } while (Character.isLetterOrDigit(peek));
             String s = b.toString();
+            if (funcTable.getMap().get(s)!=null){
+                return funcTable.getMap().get(s);
+            }
             Word w = words.get(s);
             if (w != null) {
                 return w;
@@ -142,5 +150,9 @@ public class Lexer {
         Token tok = new Token(peek);
         peek = ' ';
         return tok;
+    }
+
+    public FuncTable getFuncTable() {
+        return funcTable;
     }
 }

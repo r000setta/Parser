@@ -1,5 +1,6 @@
 package parser;
 
+import config.IREmit;
 import inter.*;
 import lexer.*;
 import symbols.Array;
@@ -21,10 +22,6 @@ public class Parser {
     private Env top = null; //顶层符号表
     private int used = 0;   //声明变量的存储位置
     private FuncTable funcTable;
-
-    private void emit(String s) {
-        System.out.println(s);
-    }
 
     public Parser(Lexer l) throws IOException {
         lex = l;
@@ -52,16 +49,17 @@ public class Parser {
         Stmt s = block();
         int begin = s.newLabel();
         int after = s.newLabel();
-        s.emitLabel(begin);
+        //s.emitLabel(begin);
         s.gen(begin, after);
         //s.emitLabel(after);
+        if (IREmit.isFile)
+            IREmit.close();
     }
 
     private Stmt block() throws IOException {
         match('{');
         Env savedEnv = top; //存放最顶层的符号表
         top = new Env(top);
-        emit("Declaration:");
         decls();    //处理声明
         Stmt s = stmts();
         match('}');
@@ -82,13 +80,21 @@ public class Parser {
                         error("The variable " + id + " has been declared!");
                     }
                     used = used + p.width;
-                    id.emit("decl " + p + " " + id);
+                    IREmit.emit("decl " + id + ":" + p);
+                    break;
                 case Tag.EXTERN:
                     Func func = func();
-                    if (funcTable.getMap().putIfAbsent(func.getName(), func) != null) {
+                    if (funcTable.getMap().putIfAbsent(func.getName(), func) == null) {
+                        lex.getFuncTable().getMap().put(func.getName(), func);
+                    } else {
                         error("The extern function has been defined");
                     }
-                    emit("\tdecl extfun " + func.getName());
+                    match(';'); //
+                    IREmit.emit("extern " + func.getName() + ":" + func.getRet() + " ");
+                    if (func.getArgNum() != 0) {
+                        for (Arg arg : func.getArgs())
+                            IREmit.emit(arg.getName() + ":" + arg.getType());
+                    }
             }
         }
     }
@@ -96,24 +102,30 @@ public class Parser {
     private Func func() throws IOException {
         move();
         Type type = type();
-        Func func = new Func(Tag.EXTERN, look.toString(), true, type);
+        Func func = new Func(Tag.FUNC, look.toString(), true, type);
         move();
         match('(');
-        Arg[] args = args();
+        Arg[] args = defArgs();
         func.setArgNum(args.length);
         func.setArgs(args);
         match(')');
-        match(';');
         return func;
     }
 
-    private Arg[] args() throws IOException {
+    private Arg[] defArgs() throws IOException {
         List<Arg> list = new ArrayList<>();
         while (look.tag == Tag.BASIC) {
             Type p = type();
             Token tok = look;
-            match(Tag.ID);
-            list.add(new Arg(p, tok.toString()));
+            //match(Tag.ID);
+            try {
+                match(',');
+            } catch (Error e) {
+                if (look.tag == ')') {
+
+                }
+            }
+            list.add(new Arg(p));
         }
         return list.toArray(new Arg[list.size()]);
     }
@@ -144,6 +156,55 @@ public class Parser {
             return Stmt.Null;
         } else {
             return new Seq(stmt(), stmts());
+        }
+    }
+
+    private Stmt call() throws IOException {
+        Func func = (Func) look;
+        match(Tag.FUNC);
+        if (func.getRet() != Type.Void) {
+            error("syntax error");
+        }
+        match('(');
+        Arg[] args = args();
+        checkArgs(args, func);
+        match(')');
+        if (func.isExtern()) {
+            return new Call(func, args, func.isExtern());
+        }
+        return null;
+    }
+
+    private Arg[] args() throws IOException {
+        List<Arg> list = new ArrayList<>();
+        while (look.tag == Tag.ID) {
+            Word word = (Word) look;
+            if (!top.isExist(word.lexeme))
+                error("undefined variable " + word.lexeme);
+            Type type = top.get(word).type;
+            list.add(new Arg(type, word.lexeme));
+            move();
+            if (look.tag == ',') {
+                move();
+                continue;
+            } else {
+                break;
+            }
+        }
+        return list.toArray(new Arg[list.size()]);
+    }
+
+    private void checkArgs(Arg[] args, Func func) {
+        Arg[] funcArg = func.getArgs();
+        if (args.length != funcArg.length)
+            error("Argument length error!");
+        for (int i = 0; i < args.length; i++) {
+            if (funcArg[i].getType() != args[i].getType()) {
+                error("Argument type error!");
+            }
+            if (!top.isExist(args[i].getName())) {
+                error("unknown variable " + args[i].getName());
+            }
         }
     }
 
@@ -198,6 +259,8 @@ public class Parser {
                 return new Break();
             case '{':
                 return block();
+            case Tag.FUNC:
+                return call();
             default:
                 return assign();
         }

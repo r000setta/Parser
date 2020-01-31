@@ -1,7 +1,9 @@
 package symbols;
 
 import inter.Id;
+import lexer.Tag;
 import lexer.Token;
+import lexer.Word;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -16,7 +18,7 @@ public class Env {
     }
 
     public Object put(Token w, Id i) {
-        return table.putIfAbsent(w,i);
+        return table.putIfAbsent(w, i);
     }
 
     public Id get(Token w) {
@@ -27,5 +29,10 @@ public class Env {
             }
         }
         return null;
+    }
+
+    public boolean isExist(String varName) {
+        Token temp = new Word(varName, Tag.ID);
+        return table.containsKey(temp);
     }
 }

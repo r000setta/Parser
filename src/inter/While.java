@@ -1,5 +1,6 @@
 package inter;
 
+import config.IREmit;
 import symbols.Type;
 
 public class While extends Stmt{
@@ -24,6 +25,6 @@ public class While extends Stmt{
         int label= newLabel();
         emitLabel(label);
         stmt.gen(label,b);
-        emit("goto L"+b);
+        IREmit.emit("goto L"+b);
     }
 }
